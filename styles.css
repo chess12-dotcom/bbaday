@@ -1,0 +1,609 @@
+
+/* =========================================
+   1. RESET & COLOUR PALETTE
+========================================= */
+
+:root {
+    --wine: #35151d;
+    --burgundy: #571f2b;
+    --cherry: #793441;
+    --dusty-rose: #a96870;
+    --muted-pink: #c99a9c;
+    --pale-pink: #ead6d3;
+    --cream: #f0e7dc;
+    --paper: #f6eee5;
+    --silver: #bcb7b5;
+    --text: #60434a;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* =========================================
+   2. ATMOSPHERIC BACKGROUND
+========================================= */
+
+body {
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background:
+        radial-gradient(
+            ellipse at 20% 15%,
+            rgba(139, 63, 75, 0.25),
+            transparent 45%
+        ),
+        radial-gradient(
+            ellipse at 85% 85%,
+            rgba(90, 39, 51, 0.3),
+            transparent 45%
+        ),
+        linear-gradient(
+            145deg,
+            #30141c,
+            #211117 55%,
+            #120c10
+        );
+
+    font-family: "Trebuchet MS", sans-serif;
+
+    overflow: hidden;
+}
+
+/* Subtle retro star / grain details */
+
+body::before {
+    content: "";
+
+    position: fixed;
+    inset: 0;
+
+    pointer-events: none;
+
+    background-image:
+        radial-gradient(1px 1px at 10% 20%, #e8c8c6, transparent),
+        radial-gradient(2px 2px at 25% 75%, #c58c91, transparent),
+        radial-gradient(1px 1px at 45% 15%, #f1d9d5, transparent),
+        radial-gradient(2px 2px at 65% 35%, #b77c84, transparent),
+        radial-gradient(1px 1px at 80% 80%, #e8c8c6, transparent),
+        radial-gradient(1px 1px at 90% 25%, #d9a5a6, transparent),
+        radial-gradient(2px 2px at 35% 45%, #f1d9d5, transparent);
+
+    opacity: 0.45;
+}
+
+/* Soft light behind the book */
+
+.book-container {
+    width: 700px;
+    height: 450px;
+
+    perspective: 2000px;
+
+    position: relative;
+}
+
+.book-container::before {
+    content: "";
+
+    position: absolute;
+    inset: -60px;
+
+    background: radial-gradient(
+        ellipse,
+        rgba(151, 65, 78, 0.25),
+        transparent 70%
+    );
+
+    filter: blur(30px);
+
+    pointer-events: none;
+}
+
+
+/* =========================================
+   3. BOOK STRUCTURE
+========================================= */
+
+.book {
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+
+    transform-style: preserve-3d;
+
+    isolation: isolate;
+
+    filter: drop-shadow(
+        0 25px 35px rgba(0, 0, 0, 0.5)
+    );
+}
+
+
+/* =========================================
+   4. FRONT COVER
+========================================= */
+
+.cover {
+    position: absolute;
+
+    width: 50%;
+    height: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 4px 14px 14px 4px;
+
+    backface-visibility: hidden;
+
+    overflow: hidden;
+}
+
+.front-cover {
+    left: 50%;
+
+    transform-origin: left;
+
+    cursor: pointer;
+
+    z-index: 100;
+
+    background:
+        radial-gradient(
+            circle at 50% 35%,
+            rgba(164, 83, 94, 0.3),
+            transparent 55%
+        ),
+        linear-gradient(
+            145deg,
+            #803c49,
+            #592632 48%,
+            #351820
+        );
+
+    border: 1px solid rgba(222, 175, 174, 0.35);
+
+    box-shadow:
+        inset 0 0 35px rgba(255,255,255,0.04),
+        inset 5px 0 12px rgba(255,255,255,0.06),
+        5px 8px 20px rgba(0,0,0,0.4);
+
+    transition: transform 1s ease;
+}
+
+/* Decorative double border */
+
+.front-cover::before {
+    content: "";
+
+    position: absolute;
+
+    inset: 22px;
+
+    border: 1px solid rgba(222, 175, 174, 0.4);
+
+    outline: 1px solid rgba(222, 175, 174, 0.12);
+
+    outline-offset: 5px;
+
+    box-shadow:
+        inset 0 0 30px rgba(255, 210, 210, 0.04),
+        0 0 20px rgba(0,0,0,0.1);
+
+    animation: softGlow 5s ease-in-out infinite;
+}
+
+/* Tiny retro decorative symbols */
+
+.front-cover::after {
+    content: "✦  ·  ♡  ·  ✧  ·  ♡  ·  ✦";
+
+    position: absolute;
+
+    top: 65px;
+
+    color: rgba(238, 207, 205, 0.75);
+
+    font-size: 12px;
+
+    letter-spacing: 5px;
+}
+
+.front-cover.opened {
+    transform: rotateY(-180deg);
+    pointer-events: none;
+}
+
+.back-cover {
+    left: 50%;
+
+    z-index: -1;
+
+    background:
+        linear-gradient(
+            145deg,
+            #592632,
+            #351820
+        );
+}
+
+
+/* =========================================
+   5. COVER TYPOGRAPHY
+========================================= */
+
+.cover-content {
+    position: relative;
+    z-index: 2;
+
+    text-align: center;
+
+    color: var(--cream);
+
+    padding: 25px;
+}
+
+.cover-content h1 {
+    font-family: Georgia, serif;
+
+    font-size: 36px;
+
+    font-weight: normal;
+
+    letter-spacing: 1px;
+
+    line-height: 1.3;
+
+    color: #f0d9d4;
+
+    text-shadow:
+        0 2px 8px rgba(0,0,0,0.35);
+
+    margin-bottom: 15px;
+}
+
+.cover-content p {
+    font-family: "Trebuchet MS", sans-serif;
+
+    font-size: 9px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 3px;
+
+    color: #d7a9a9;
+}
+
+
+/* =========================================
+   6. INDIVIDUAL PAGES
+========================================= */
+
+.page {
+    position: absolute;
+
+    width: 50%;
+    height: 100%;
+
+    left: 50%;
+    top: 0;
+
+    transform-origin: left;
+
+    transform-style: preserve-3d;
+
+    transition: transform 1s ease;
+
+    cursor: pointer;
+}
+
+
+/* =========================================
+   7. PAGE DESIGN
+========================================= */
+
+.page-front,
+.page-back {
+    position: absolute;
+
+    width: 100%;
+    height: 100%;
+
+    padding: 30px;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    background:
+        radial-gradient(
+            circle at 90% 5%,
+            rgba(201, 154, 156, 0.2),
+            transparent 40%
+        ),
+        radial-gradient(
+            circle at 5% 95%,
+            rgba(173, 117, 119, 0.12),
+            transparent 45%
+        ),
+        linear-gradient(
+            145deg,
+            #f6eee5,
+            #eadbd3
+        );
+
+    color: var(--text);
+
+    backface-visibility: hidden;
+
+    border: 1px solid rgba(255,255,255,0.7);
+
+    box-shadow:
+        inset 0 0 35px rgba(255,255,255,0.35);
+
+    overflow: hidden;
+}
+
+/* Faint paper-like horizontal lines */
+
+.page-front::before,
+.page-back::before {
+    content: "✦  FELIZ CUMPLEAÑOS ✦";
+
+    position: absolute;
+
+    top: 23px;
+
+    font-family: "Trebuchet MS", sans-serif;
+
+    font-size: 8px;
+
+    letter-spacing: 3px;
+
+    color: #a77b7e;
+
+    opacity: 0.85;
+}
+
+/* Retro page number / decoration */
+
+.page-front::after,
+.page-back::after {
+    content: "♡  2014— ∞";
+
+    position: absolute;
+
+    bottom: 18px;
+    right: 22px;
+
+    font-size: 8px;
+
+    letter-spacing: 1px;
+
+    color: #a16c73;
+
+    opacity: 0.8;
+}
+
+.page-back {
+    transform: rotateY(180deg);
+
+    background:
+        radial-gradient(
+            circle at 10% 10%,
+            rgba(193, 139, 143, 0.18),
+            transparent 45%
+        ),
+        linear-gradient(
+            145deg,
+            #eee0d9,
+            #f5eae1
+        );
+}
+
+
+/* =========================================
+   8. PAGE TYPOGRAPHY
+========================================= */
+
+.page h2 {
+    font-family: Georgia, serif;
+
+    font-size: 24px;
+
+    font-weight: normal;
+
+    color: #713b46;
+
+    letter-spacing: 0.5px;
+
+    margin-bottom: 18px;
+
+    text-shadow:
+        0 1px 2px rgba(255,255,255,0.8);
+}
+
+.page p {
+    font-family: "Trebuchet MS", sans-serif;
+
+    font-size: 12px;
+
+    line-height: 1.9;
+
+    max-width: 90%;
+
+    margin-top: 14px;
+
+    color: #795b60;
+
+    letter-spacing: 0.2px;
+}
+
+
+/* =========================================
+   9. PHOTOGRAPH FRAMES
+========================================= */
+
+.page img {
+    width: auto;
+    height: auto;
+
+    max-width: 85%;
+    max-height: 52%;
+
+    object-fit: contain;
+
+    padding: 9px;
+
+    background: #fffaf5;
+
+    border: 1px solid #e8d8d1;
+
+    box-shadow:
+        0 5px 18px rgba(76, 35, 44, 0.18),
+        0 0 12px rgba(173, 117, 119, 0.12);
+
+    transform: rotate(-2deg);
+
+    flex-shrink: 1;
+}
+
+
+/* =========================================
+   10. PAGE FLIPPING
+========================================= */
+
+.page.flipped {
+    transform: rotateY(-180deg);
+}
+
+
+/* =========================================
+   11. BOOK SPINE
+========================================= */
+
+.book::before {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    top: 0;
+
+    width: 9px;
+    height: 100%;
+
+    transform: translateX(-50%);
+
+    background:
+        linear-gradient(
+            to right,
+            #49212b,
+            #a8797d,
+            #e2c9c5,
+            #9d6c72,
+            #49212b
+        );
+
+    z-index: 200;
+
+    pointer-events: none;
+
+    box-shadow:
+        0 0 12px rgba(0, 0, 0, 0.2);
+}
+
+
+/* =========================================
+   12. SUBTLE ANIMATIONS
+========================================= */
+
+@keyframes softGlow {
+    0%, 100% {
+        opacity: 0.65;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+
+/* =========================================
+   13. RESPONSIVE DESIGN
+========================================= */
+
+@media (max-width: 750px) {
+
+    .book-container {
+        width: 90vw;
+        height: 58vw;
+    }
+
+    .page-front,
+    .page-back {
+        padding: 12px;
+    }
+
+    .page-front::before,
+    .page-back::before {
+        top: 10px;
+        font-size: 6px;
+        letter-spacing: 1px;
+    }
+
+    .page-front::after,
+    .page-back::after {
+        bottom: 8px;
+        right: 9px;
+        font-size: 6px;
+    }
+
+    .page h2 {
+        font-size: 15px;
+        margin-bottom: 8px;
+    }
+
+    .page p {
+        font-size: 10px;
+        line-height: 1.5;
+        margin-top: 7px;
+    }
+
+    .cover-content h1 {
+        font-size: 20px;
+    }
+
+    .cover-content p {
+        font-size: 8px;
+    }
+
+    .front-cover::before {
+        inset: 12px;
+    }
+
+    .front-cover::after {
+        top: 25px;
+        font-size: 8px;
+        letter-spacing: 2px;
+    }
+
+    .page img {
+        max-height: 52%;
+        max-width: 95%;
+    }
+}
